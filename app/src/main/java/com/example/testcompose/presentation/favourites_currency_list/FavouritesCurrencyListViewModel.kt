@@ -21,8 +21,7 @@ class FavouritesCurrencyListViewModel @Inject constructor(
 
     private val _state = mutableStateOf(CurrencyListState())
     val state: State<CurrencyListState> = _state
-
-    private val qwe: Int = 3
+    
 
     init {
         getCurrencyList()
