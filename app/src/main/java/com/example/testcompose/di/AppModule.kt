@@ -8,6 +8,7 @@ import com.example.testcompose.data.remote.CurrencyApi
 import com.example.testcompose.data.repository.CurrencyRepositoryImpl
 import com.example.testcompose.domain.repository.CurrencyRepository
 import com.example.testcompose.domain.use_case.GetCurrencyListUseCase
+import com.example.testcompose.domain.use_case.UpdateCurrencyUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -77,5 +78,11 @@ object AppModule {
     @Singleton
     fun provideGetCurrencyListUseCase(repository: CurrencyRepository): GetCurrencyListUseCase {
         return GetCurrencyListUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdateCurrencyUseCase(db: CurrenciesDatabase): UpdateCurrencyUseCase {
+        return UpdateCurrencyUseCase(db.currencyDao)
     }
 }

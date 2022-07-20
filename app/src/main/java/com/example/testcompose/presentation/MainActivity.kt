@@ -20,7 +20,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.testcompose.presentation.currency_list.CurrencyListScreen
-import com.example.testcompose.presentation.favourites_currency_list.FavouritesCurrencyListScreen
 import com.example.testcompose.presentation.util.Screen
 import com.example.testcompose.ui.theme.TestComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,60 +37,19 @@ class MainActivity : ComponentActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     val navController = rememberNavController()
 
-                    Scaffold(
-                        bottomBar = {
-                            BottomNavigationBar(navController = navController)
-                        }
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.CurrencyListScreen.route
                     ) {
-                        NavHost(
-                            navController = navController,
-                            startDestination = Screen.CurrencyListScreen.route
-                        ) {
-                            composable(route = Screen.CurrencyListScreen.route) {
-                                CurrencyListScreen(navController = navController)
-                            }
-                            composable(route = Screen.FavouritesCurrencyListScreen.route) {
-                                FavouritesCurrencyListScreen(navController = navController)
-                            }
+                        composable(route = Screen.CurrencyListScreen.route) {
+                            CurrencyListScreen(navController = navController)
                         }
                     }
+
                 }
             }
         }
     }
 }
 
-
-@Composable
-fun BottomNavigationBar(modifier: Modifier = Modifier, navController: NavController) {
-    val screens = listOf(
-        Screen.CurrencyListScreen,
-        Screen.FavouritesCurrencyListScreen
-    )
-
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-
-    BottomNavigation(
-        modifier = modifier,
-        backgroundColor = MaterialTheme.colors.primary,
-        elevation = 5.dp
-    ) {
-        screens.forEach { screen ->
-            val selected = screen.route == navBackStackEntry?.destination?.route
-            BottomNavigationItem(
-                selected = selected,
-                selectedContentColor = Color.White,
-                unselectedContentColor = Color.Gray,
-                onClick = {
-                    navController.navigate(screen.route){
-                        popUpTo(navController.graph.findStartDestination().id)
-                        launchSingleTop = true
-                    }
-                },
-                icon = {
-                    Icon(imageVector = Icons.Default.Alarm, contentDescription = "")
-                })
-        }
-    }
-}
 
