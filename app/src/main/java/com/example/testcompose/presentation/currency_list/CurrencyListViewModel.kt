@@ -119,14 +119,26 @@ class CurrencyListViewModel @Inject constructor(
         return when (currencyOrder.orderType) {
             is OrderType.Ascending -> {
                 when (currencyOrder) {
-                    is CurrencyOrder.Description -> currencies.sortedBy { it.description.lowercase() }
-                    is CurrencyOrder.Value -> currencies.sortedBy { it.value }
+                    is CurrencyOrder.Description -> {
+                        allCurrencies = currencies.sortedBy { it.description.lowercase() }
+                        allCurrencies
+                    }
+                    is CurrencyOrder.Value -> {
+                        allCurrencies = currencies.sortedBy { it.value }
+                        allCurrencies
+                    }
                 }
             }
             is OrderType.Descending -> {
                 when (currencyOrder) {
-                    is CurrencyOrder.Description -> currencies.sortedByDescending { it.description.lowercase() }
-                    is CurrencyOrder.Value -> currencies.sortedByDescending { it.value }
+                    is CurrencyOrder.Description -> {
+                        allCurrencies = currencies.sortedByDescending { it.description.lowercase() }
+                        allCurrencies
+                    }
+                    is CurrencyOrder.Value -> {
+                        allCurrencies = currencies.sortedByDescending { it.value }
+                        allCurrencies
+                    }
                 }
             }
         }
