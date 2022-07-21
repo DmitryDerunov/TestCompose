@@ -8,23 +8,25 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.StarRate
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.testcompose.domain.model.Currency
 import com.example.testcompose.presentation.currency_list.components.CurrencyListItem
 import com.example.testcompose.presentation.currency_list.components.OrderSection
 
@@ -49,7 +51,6 @@ fun CurrencyListScreen(
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxSize()) {
-
                 Column(modifier = Modifier.weight(1f)) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -59,13 +60,24 @@ fun CurrencyListScreen(
                         Button(
                             modifier = Modifier.border(1.dp, MaterialTheme.colors.primary),
                             onClick = {
-
+                                viewModel.dropDownVisibility(true)
                         }) {
                             Text(modifier = Modifier
                                 .padding(16.dp),
                                 text = state.baseCurrency, style = MaterialTheme.typography.h6)
                             Spacer(modifier = Modifier.width(10.dp))
                             Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "Relative currency")
+                        }
+                        DropdownMenu(modifier = Modifier
+                            .width(150.dp)
+                            .height((LocalConfiguration.current.screenHeightDp / 2).dp), expanded = state.isDropDownShown, onDismissRequest = { viewModel.dropDownVisibility(false)}) {
+                            state.currencyList.forEach { currency ->
+                                DropdownMenuItem(onClick = { /*TODO*/ }) {
+                                    ClickableText(text = AnnotatedString(currency.description), onClick = {
+                                        viewModel.changeRelativeCurrency(currency)
+                                    })
+                                }
+                            }
                         }
                         IconButton(
                             onClick = {
@@ -155,13 +167,6 @@ fun CurrencyListScreen(
 
 
 @Composable
-fun DropDownMenu(state: CurrencyListScreenState){
-    val screenHeight = LocalConfiguration.current.screenHeightDp
-    DropdownMenu(modifier = Modifier.width(150.dp).height((screenHeight/2).dp), expanded = true, onDismissRequest = { /*TODO*/ }) {
-        state.currencyList.forEach {
-            DropdownMenuItem(onClick = { /*TODO*/ }) {
-                Text(text = it.description)
-            }
-        }
-    }
+fun DropDownMenu(state: CurrencyListScreenState, onItemClick: (Currency) -> Unit){
+
 }

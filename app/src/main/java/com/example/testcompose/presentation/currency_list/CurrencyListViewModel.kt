@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testcompose.common.Resource
+import com.example.testcompose.data.local.CurrenciesDatabase
 import com.example.testcompose.domain.model.Currency
 import com.example.testcompose.domain.use_case.GetCurrencyListUseCase
 import com.example.testcompose.domain.use_case.UpdateCurrencyUseCase
@@ -84,11 +85,15 @@ class CurrencyListViewModel @Inject constructor(
 
     fun addToFavourite(currency: Currency) {
         viewModelScope.launch {
-            updateCurrencyUseCase.invoke(currency)
             allCurrencies = allCurrencies.map { if (it == currency) currency.copy(isFavourite = !currency.isFavourite) else it  }
             _state.value = _state.value.copy(currencyList =
             if(_state.value.showOnlyFavourites) allCurrencies.filter { it.isFavourite } else allCurrencies)
+            updateCurrencyUseCase.invoke(currency.copy(isFavourite = !currency.isFavourite))
         }
+    }
+
+    fun dropDownVisibility(isDropDownShown: Boolean){
+        _state.value = _state.value.copy(isDropDownShown = isDropDownShown)
     }
 
     fun toggleOrderSection() {
@@ -97,7 +102,9 @@ class CurrencyListViewModel @Inject constructor(
     }
 
     fun changeRelativeCurrency(currency: Currency){
-
+        allCurrencies = allCurrencies.map { it.copy(value = it.value/currency.value)}
+        _state.value = _state.value.copy(currencyList = if(_state.value.showOnlyFavourites) allCurrencies.filter { it.isFavourite } else allCurrencies,
+            isDropDownShown = false)
     }
 
 

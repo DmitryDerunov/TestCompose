@@ -29,7 +29,7 @@ fun OrderSection(
                 onSelect = { onOrderChange(CurrencyOrder.Value(currencyOrder.orderType)) }
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
             DefaultRadioButton(
                 text = "Ascending",
