@@ -102,7 +102,6 @@ class CurrencyListViewModel @Inject constructor(
 
 
     private fun initState(currencies: List<Currency>) {
-        allCurrencies = currencies
         _state.value = CurrencyListScreenState(
             currencyList = sortCurrenciesByOrder(
                 currencies,
