@@ -39,8 +39,8 @@ fun CurrencyListScreen(
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
 
-    LaunchedEffect(key1 = Unit ){
-        viewModel.showMessage.collect{
+    LaunchedEffect(key1 = Unit) {
+        viewModel.showMessage.collect {
             scaffoldState.snackbarHostState.showSnackbar(it)
         }
     }
@@ -61,21 +61,32 @@ fun CurrencyListScreen(
                             modifier = Modifier.border(1.dp, MaterialTheme.colors.primary),
                             onClick = {
                                 viewModel.dropDownVisibility(true)
-                        }) {
-                            Text(modifier = Modifier
-                                .padding(16.dp),
-                                text = state.baseCurrency, style = MaterialTheme.typography.h6)
+                            }) {
+                            Text(
+                                modifier = Modifier
+                                    .padding(16.dp),
+                                text = state.baseCurrency, style = MaterialTheme.typography.h6
+                            )
                             Spacer(modifier = Modifier.width(10.dp))
-                            Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "Relative currency")
+                            Icon(
+                                imageVector = Icons.Default.ArrowDropDown,
+                                contentDescription = "Relative currency"
+                            )
                         }
                         DropdownMenu(modifier = Modifier
-                            .width(150.dp)
-                            .height((LocalConfiguration.current.screenHeightDp / 2).dp), expanded = state.isDropDownShown, onDismissRequest = { viewModel.dropDownVisibility(false)}) {
+                            .requiredSizeIn(maxHeight = (LocalConfiguration.current.screenHeightDp/2).dp)
+                            .width(150.dp),
+                            expanded = state.isDropDownShown,
+                            onDismissRequest = { viewModel.dropDownVisibility(false) }) {
                             state.currencyList.forEach { currency ->
-                                DropdownMenuItem(onClick = { /*TODO*/ }) {
-                                    ClickableText(text = AnnotatedString(currency.description), onClick = {
-                                        viewModel.changeRelativeCurrency(currency)
-                                    })
+                                DropdownMenuItem(onClick = {
+                                    viewModel.changeRelativeCurrency(
+                                        currency
+                                    )
+                                }) {
+                                    Text(
+                                        text = AnnotatedString(currency.description)
+                                    )
                                 }
                             }
                         }
@@ -123,9 +134,11 @@ fun CurrencyListScreen(
                         .height(50.dp)
                         .background(MaterialTheme.colors.primary, RectangleShape)
                 ) {
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .align(CenterVertically)) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .align(CenterVertically)
+                    ) {
                         IconButton(modifier = Modifier
                             .size(30.dp)
                             .align(Alignment.Center),
@@ -139,9 +152,11 @@ fun CurrencyListScreen(
                             )
                         }
                     }
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .align(CenterVertically)) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .align(CenterVertically)
+                    ) {
                         IconButton(modifier = Modifier
                             .size(30.dp)
                             .align(Alignment.Center),
