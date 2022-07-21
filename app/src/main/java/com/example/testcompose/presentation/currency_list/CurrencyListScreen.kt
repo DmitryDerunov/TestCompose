@@ -164,9 +164,3 @@ fun CurrencyListScreen(
         }
     }
 }
-
-
-@Composable
-fun DropDownMenu(state: CurrencyListScreenState, onItemClick: (Currency) -> Unit){
-
-}
