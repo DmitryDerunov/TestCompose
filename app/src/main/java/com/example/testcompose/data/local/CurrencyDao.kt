@@ -10,6 +10,9 @@ interface CurrencyDao {
     @Query("SELECT * FROM currency")
     suspend fun getCurrencyList(): List<Currency>
 
+    @Query("DELETE FROM currency")
+    suspend fun deleteAllData()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCurrency(currency: Currency)
 

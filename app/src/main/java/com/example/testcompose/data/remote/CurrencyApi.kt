@@ -6,5 +6,5 @@ import retrofit2.http.GET
 interface CurrencyApi {
 
     @GET("/exchangerates_data/latest")
-    suspend fun getCurrency(): CurrencyResponse
+    suspend fun getCurrencyList(): CurrencyResponse
 }

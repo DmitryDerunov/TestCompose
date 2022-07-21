@@ -4,20 +4,24 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -33,19 +37,36 @@ fun CurrencyListScreen(
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
 
+    LaunchedEffect(key1 = Unit ){
+        viewModel.showMessage.collect{
+            scaffoldState.snackbarHostState.showSnackbar(it)
+        }
+    }
+
     Scaffold(
         scaffoldState = scaffoldState,
         backgroundColor = MaterialTheme.colors.background
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxSize()) {
+
                 Column(modifier = Modifier.weight(1f)) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = "Your note", style = MaterialTheme.typography.h4)
+                        Button(
+                            modifier = Modifier.border(1.dp, MaterialTheme.colors.primary),
+                            onClick = {
+
+                        }) {
+                            Text(modifier = Modifier
+                                .padding(16.dp),
+                                text = state.baseCurrency, style = MaterialTheme.typography.h6)
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "Relative currency")
+                        }
                         IconButton(
                             onClick = {
                                 viewModel.toggleOrderSection()
@@ -56,6 +77,7 @@ fun CurrencyListScreen(
                             )
                         }
                     }
+
                     AnimatedVisibility(
                         visible = state.isOrderSectionVisible,
                         enter = fadeIn() + slideInVertically(),
@@ -126,6 +148,19 @@ fun CurrencyListScreen(
             }
             if (state.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+        }
+    }
+}
+
+
+@Composable
+fun DropDownMenu(state: CurrencyListScreenState){
+    val screenHeight = LocalConfiguration.current.screenHeightDp
+    DropdownMenu(modifier = Modifier.width(150.dp).height((screenHeight/2).dp), expanded = true, onDismissRequest = { /*TODO*/ }) {
+        state.currencyList.forEach {
+            DropdownMenuItem(onClick = { /*TODO*/ }) {
+                Text(text = it.description)
             }
         }
     }

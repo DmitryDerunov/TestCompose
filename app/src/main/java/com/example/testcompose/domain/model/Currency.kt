@@ -10,5 +10,6 @@ data class Currency(
     val description: String,
     val value: Double,
     val isFavourite: Boolean = false,
-    @PrimaryKey val id: Int? = null
+    @PrimaryKey
+    val id: Int
 )

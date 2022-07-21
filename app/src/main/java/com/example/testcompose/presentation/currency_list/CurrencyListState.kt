@@ -11,5 +11,6 @@ data class CurrencyListScreenState(
     val currencyList: List<Currency> = emptyList(),
     val isOrderSectionVisible: Boolean = false,
     val currencyOrder: CurrencyOrder = CurrencyOrder.Description(OrderType.Descending),
-    val showOnlyFavourites: Boolean = false
+    val showOnlyFavourites: Boolean = false,
+    val baseCurrency: String = ""
 )
